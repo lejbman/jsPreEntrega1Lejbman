@@ -108,4 +108,149 @@ if(validar == "Si" || validar == "Sí" || validar == "SI" || validar == "si" || 
 } else{
     alert("Gracias! Vuelva pronto!")
 }
+ 
+//clase constructora para la carga de empleados
+
+class Empleados{
+    static id = 0
+    constructor (nombre, cuit, edad, ocupacion){
+        this.id = ++Empleados.id
+        this.nombre = nombre,
+        this.cuit = cuit,
+        this.edad = edad,
+        this.ocupacion = ocupacion   
+    }
+}
+//const empleado4 = new Empleados ("juan", 1234, 26, "operario")
+//const empleado5 = new Empleados ("raul", 1235, 29, "operario")
+//console.log (empleado1, empleado2)
+
+//Array para cargar a los empleados
+const empleadosarts = []
+
+//Función para cargar empleados en el constructor
+
+cargarEmpleados = () => {
+    let cargarNombre = prompt("Ingrese nombre y apellido del empleado")
+    let cargarCuit = parseInt(prompt("Ingrese el número de CUIT o CUIL del empleado"))
+    let cargarEdad = parseInt(prompt("Ingrese la edad del empleado"))
+    let cargarOcupacion = prompt("Ingrese la ocupación del empleado")
+    const empleado = new Empleados(cargarNombre,cargarCuit,cargarEdad,cargarOcupacion)
+    empleadosarts.push(empleado)
+    console.log(empleado)
+    console.log(empleadosarts)
+}
+
+//Función para ver los empleados cargados
+verificarEmpleados = () => {
+    if (empleadosarts.length === 0) {
+        console.log("No hay empleados cargados")
+    } else {
+        for ( const empleadosart of empleadosarts) {
+            console.log(empleadosart)
+        }
+    }   
+}
+
+//cargarEmpleados()
+
+let menu = parseInt(prompt("Elija 1 para cargar un nuevo empleado, 2 para ver los empleados cargados o 5 para salir"))
+
+while(menu !==5){
+    switch(menu){
+        case 1:
+            cargarEmpleados()
+            break
+        case 2:
+            verificarEmpleados()
+            break
+        default:
+            alert("Opción incorrecta")
+            break
+    }
+    menu = parseInt(prompt("Elija 1 para cargar un nuevo empleado, 2 para ver los empleados cargados o 5 para salir"))
+}
+
+//foreach()
+empleadosarts.forEach((empleadosart) => {
+    console.log("Los empleados cargados son los siguientes:")
+    console.log(empleadosart)
+}
+)
+
+
+
+//find()
+const buscar = parseInt(prompt("Ingrese un número de cuit de empleado, sin guiones, para iniciar su búsqueda"))
+const busqueda = empleadosarts.find((empleadosart) => empleadosart.cuit === buscar)
+console.log(busqueda)
+
+//filter()
+
+const filtrados = empleadosarts.filter((empleadosart) => empleadosart.edad >=60)
+console.log("Los empleados próximos a jubilarse (con edad mayor o igual a 60 años) son los siguientes:")
+console.log(filtrados)
+
+const filtrados2 = empleadosarts.filter((empleadosart) => empleadosart.edad <60)
+console.log("Los empleados menores de 60 años son los siguientes:")
+console.log(filtrados2)
+
+//filter con includes, que permite al usuario filtrar todos los objetos con un determinado nombre y/o apellido
+const filtrar = prompt("Ingrese un nombre y/o apellido del empleado que desea buscar")
+const filtrados3 = empleadosarts.filter((empleadosart) => empleadosart.nombre.includes (filtrar))
+console.log(filtrados3)
+
+//DOM
+
+//getElementById
+
+let titulo = document.getElementById("title")
+console.log(titulo)
+
+//getElementByClassName
+
+let eliges = document.getElementsByClassName("eliges")
+console.log(eliges)
+console.log(eliges[0].innerHTML)
+console.log(eliges[1].innerHTML)
+console.log(eliges[2].innerHTML)
+console.log(eliges[3].innerHTML)
+console.log(eliges[4].innerHTML)
+
+for (const elige of eliges) {
+    console.log(elige.innerHTML)
+}
+
+//innerText
+
+titulo.innerText = "Bienvenido al Cotizador de Alpina ART - Aseguradora de Riesgo del Trabajo"
+console.log(titulo.innerText)
+
+//append
+let subtitulo  = document.createElement("h2")
+subtitulo.innerHTML = "¡La Mejor ART del Mercado!"
+document.body.append(subtitulo)
+
+//eventos
+
+let evento = document.getElementById("imagen")
+
+evento.addEventListener("click", clickTest)
+function clickTest () {
+    console.log("Test de click")
+}
+
+let evento1 = document.getElementById("title")
+let clicks = 0
+evento1.onclick = () => {
+    clicks++
+    console.log("Cantidad de clicks: "+clicks)
+}
+
+//storage
+
+localStorage.setItem("saludo", "¡Bienvenido al cotizador de Alpina ART!")
+let saludo = localStorage.getItem("saludo")
+console.log(saludo)
+
 
