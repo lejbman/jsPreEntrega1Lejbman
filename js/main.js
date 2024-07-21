@@ -106,9 +106,10 @@ function mostrarError(mensaje) {
   errorDiv.textContent = mensaje;
   // Mostrar el div de error
   errorDiv.style.display = 'block';
+  // Configuro un setTimeout
   setTimeout(() => {
     errorDiv.textContent = '';
-    // Ocultar el div de error después de 3 segundos
+    // Ocultar el div de error después de 3 segundos, 3000 milisegundos
     errorDiv.style.display = 'none';
   }, 3000);
 }
