@@ -1,8 +1,6 @@
 // Array para almacenar empleados
 const empleadosarts = [];
 
-// DOM y Eventos
-
 // Calcular cotización por cantidad de empleados y riesgo de la actividad
 const calcularButton = document.getElementById('calcularButton');
 calcularButton.addEventListener('click', function() {
@@ -22,24 +20,62 @@ function calcularCotizacion(numEmpleados, factorRiesgo) {
     return costoTotal;
 }
 
-// Cargar empleados
 document.getElementById('cargarEmpleadoButton').addEventListener('click', function() {
+  
+  // Obtener los valores de los campos del formulario
   const cargarNombre = document.getElementById('nombre').value;
-  const cargarCuit = parseInt(document.getElementById('cuit').value);
-  const cargarEdad = parseInt(document.getElementById('edad').value);
+  const cargarCuit = document.getElementById('cuit').value.trim(); // Obtener el valor del campo CUIT
+  const cargarEdad = document.getElementById('edad').value.trim(); // Obtener el valor del campo edad
   const cargarOcupacion = document.getElementById('ocupacion').value;
 
-  const empleado = new Empleado(cargarNombre, cargarCuit, cargarEdad, cargarOcupacion);
+  // Validar que cargarCuit y cargarEdad sean números válidos y no negativos
+  if (!esNumeroValido(cargarCuit) || parseInt(cargarCuit, 10) < 0) {
+      mostrarError('El CUIT debe ser un número válido y no puede ser negativo.');
+      return;
+  }
+
+  if (!esNumeroValido(cargarEdad) || parseInt(cargarEdad, 10) < 0) {
+      mostrarError('La edad debe ser un número válido y no puede ser negativa.');
+      return;
+  }
+
+  // Convertir los valores a números enteros
+  const cuitNumero = parseInt(cargarCuit, 10);
+  const edadNumero = parseInt(cargarEdad, 10);
+
+  // Crear un nuevo objeto Empleado con los valores obtenidos
+  const empleado = new Empleado(cargarNombre, cuitNumero, edadNumero, cargarOcupacion);
+  
+  // Agregar el nuevo empleado al arreglo empleadosarts
   empleadosarts.push(empleado);
 
-  // Limpiar los campos después de cargar el empleado
+  // Limpiar los campos del formulario después de cargar el empleado
   document.getElementById('nombre').value = '';
   document.getElementById('cuit').value = '';
   document.getElementById('edad').value = '';
   document.getElementById('ocupacion').value = '';
 
+  // Llamar a una función para actualizar la lista de empleados en la interfaz
   actualizarListaEmpleados();
 });
+
+// Función auxiliar para verificar si un valor es un número válido
+function esNumeroValido(valor) {
+  // Verifica que el valor contenga solo dígitos
+  return /^\d+$/.test(valor); 
+}
+
+// Función para mostrar mensajes de error en la interfaz
+function mostrarError(mensaje) {
+  const errorDiv = document.getElementById('errorDiv');
+  errorDiv.textContent = mensaje;
+  errorDiv.style.display = 'block';  // Mostrar el div de error
+  setTimeout(() => {
+    errorDiv.textContent = '';
+    errorDiv.style.display = 'none';  // Ocultar el div de error después de 3 segundos
+  }, 3000);
+}
+
 
 // Función para actualizar la lista de empleados en el DOM
 function actualizarListaEmpleados() {
@@ -59,6 +95,7 @@ function actualizarListaEmpleados() {
     empleadosContainer.appendChild(empleadoDiv);
   });
 }
+
 
 // Clase Empleado
 class Empleado {
@@ -94,15 +131,14 @@ document.getElementById('buscarButton').addEventListener('click', function() {
 });
   
 // Event listener para el botón de filtrar empleados próximos a jubilarse
-
 document.getElementById('filtrarJubiladosButton').addEventListener('click', function() {
-    // Filtrar empleados con edad >= 60
-    const filtrados = empleadosarts.filter((empleado) => empleado.edad >= 60);
-  
-    // Mostrar los resultados en el DOM
-    mostrarResultadosFiltrados(filtrados, 'Empleados próximos a jubilarse (edad >= 60 años)');
+  // Filtrar empleados con edad >= 60
+  const filtrados = empleadosarts.filter((empleado) => empleado.edad >= 60);
+
+  // Mostrar los resultados en el DOM
+  mostrarResultadosFiltrados(filtrados, 'Empleados próximos a jubilarse (edad >= 60 años)');
 });
-  
+
   // Event listener para el botón de filtrar empleados menores de 60 años
   document.getElementById('filtrarNoJubiladosButton').addEventListener('click', function() {
     // Filtrar empleados con edad < 60
@@ -125,7 +161,7 @@ document.getElementById('filtrarJubiladosButton').addEventListener('click', func
       const listaEmpleados = document.createElement('ul');
       empleadosFiltrados.forEach((empleado) => {
         const itemEmpleado = document.createElement('li');
-        itemEmpleado.textContent = `${empleado.nombre} - Edad: ${empleado.edad}`;
+        itemEmpleado.textContent = `Nombre: ${empleado.nombre} - Edad: ${empleado.edad} - CUIT: ${empleado.cuit} - Ocupacion: ${empleado.ocupacion}`;
         listaEmpleados.appendChild(itemEmpleado);
       });
   
@@ -150,29 +186,35 @@ document.getElementById('filtrarButton').addEventListener('click', function() {
     // Mostrar los resultados en el DOM
     mostrarResultadosFiltradosNombreApellido(filtrados);
 });
-  
+
 // Función para mostrar los resultados filtrados en el DOM
 function mostrarResultadosFiltradosNombreApellido(empleadosFiltrados) {
-    const resultadosContainer = document.getElementById('resultadosFiltradosNombreApellido');
-    resultadosContainer.innerHTML = '';
-  
-    if (empleadosFiltrados.length > 0) {
-      const header = document.createElement('h3');
-      header.textContent = 'Resultados del filtro por Nombre y/o Apellido:';
-      resultadosContainer.appendChild(header);
-  
-      const listaEmpleados = document.createElement('ul');
-      empleadosFiltrados.forEach((empleado) => {
-        const itemEmpleado = document.createElement('li');
-        itemEmpleado.textContent = `${empleado.nombre}`;
-        listaEmpleados.appendChild(itemEmpleado);
-      });
-  
-      resultadosContainer.appendChild(listaEmpleados);
-    } else {
-      resultadosContainer.textContent = 'No se encontraron empleados con el nombre y/o apellido especificado.';
-    }
+  const resultadosContainer = document.getElementById('resultadosFiltradosNombreApellido');
+  resultadosContainer.innerHTML = '';
+
+  if (empleadosFiltrados.length > 0) {
+    const header = document.createElement('h3');
+    header.textContent = 'Resultados del filtro por Nombre y/o Apellido:';
+    resultadosContainer.appendChild(header);
+
+    const listaEmpleados = document.createElement('ul');
+    empleadosFiltrados.forEach((empleado) => {
+      const itemEmpleado = document.createElement('li');
+      itemEmpleado.innerHTML = `
+        <strong>Nombre:</strong> ${empleado.nombre} <br>
+        <strong>CUIT/CUIL:</strong> ${empleado.cuit} <br>
+        <strong>Edad:</strong> ${empleado.edad} <br>
+        <strong>Ocupación:</strong> ${empleado.ocupacion}
+      `;
+      listaEmpleados.appendChild(itemEmpleado);
+    });
+
+    resultadosContainer.appendChild(listaEmpleados);
+  } else {
+    resultadosContainer.textContent = 'No se encontraron empleados con el nombre y/o apellido especificado.';
+  }
 }
+
 
 // innerText
 document.addEventListener('DOMContentLoaded', function() {
@@ -184,22 +226,6 @@ document.addEventListener('DOMContentLoaded', function() {
 let subtitulo  = document.createElement("h2")
 subtitulo.innerHTML = "¡Somos la Mejor ART del Mercado!"
 document.body.append(subtitulo)
-
-// eventos
-let evento = document.getElementById("imagen")
-evento.addEventListener("click", clickTest)
-function clickTest () {
-}
-
-let evento1 = document.getElementById("title")
-let clicks = 0
-evento1.onclick = () => {
-    clicks++
-}
-
-//storage
-localStorage.setItem("saludo", "¡Bienvenido al cotizador de Alpina ART!")
-let saludo = localStorage.getItem("saludo")
 
 // Convertir empleados a JSON y guardar en localStorage
 function guardarEmpleadosEnLocalStorage() {
