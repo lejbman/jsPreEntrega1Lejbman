@@ -40,6 +40,17 @@ calcularButton.addEventListener('click', function() {
   const numEmpleados = parseInt(document.getElementById('empleados').value);
   const factorRiesgo = parseFloat(document.getElementById('riesgo').value);
 
+  // Comparar numEmpleados con la cantidad de empleados en localStorage
+  if (empleadosarts.length !== numEmpleados) {
+    // Mostrar Sweetalert indicando la diferencia
+    Swal.fire({
+      icon: 'warning',
+      title: 'Atención',
+      text: `Se informa la cotización a continuación, pero la cantidad de empleados con datos cargados (${empleadosarts.length}) difiere de la cantidad ingresada para dicha cotización (${numEmpleados}).`,
+      confirmButtonText: 'Entendido'
+    });
+  }
+
   const cotizacion = calcularCotizacion(numEmpleados, factorRiesgo);
 
   const resultadoElement = document.getElementById('resultado');
@@ -128,10 +139,61 @@ function actualizarListaEmpleados() {
       <p><strong>CUIT/CUIL:</strong> ${empleado.cuit}</p>
       <p><strong>Edad:</strong> ${empleado.edad}</p>
       <p><strong>Ocupación:</strong> ${empleado.ocupacion}</p>
+      <button class="eliminarEmpleadoBtn" data-index="${index}">Eliminar Empleado</button>
     `;
     empleadosContainer.appendChild(empleadoDiv);
   });
+
+  // Agregar event listeners a los botones de eliminar
+  const eliminarEmpleadoBtns = document.querySelectorAll('.eliminarEmpleadoBtn');
+  eliminarEmpleadoBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const index = parseInt(btn.getAttribute('data-index'));
+      eliminarEmpleado(index);
+    });
+  });
 }
+
+// Función para que el usuario pueda eliminar los empleados cargados, actualizando el LocalStorage y volviendo a renderizar la lista de empleados
+function eliminarEmpleado(index) {
+  if (index >= 0 && index < empleadosarts.length) {
+    // Eliminar empleado del arreglo empleadosarts
+    empleadosarts.splice(index, 1);
+    
+    // Guardar el arreglo actualizado en localStorage
+    guardarEmpleadosEnLocalStorage();
+    
+    // Actualizar la lista de empleados en el DOM
+    actualizarListaEmpleados();
+  }
+}
+
+// Función para recuperar empleados desde localStorage
+function recuperarEmpleadosDeLocalStorage() {
+  try {
+    const empleadosJson = localStorage.getItem('empleados');
+    if (empleadosJson) {
+      empleadosarts = JSON.parse(empleadosJson);
+      console.log('Empleados recuperados desde localStorage:', empleadosarts);
+    } else {
+      empleadosarts = [];
+      console.log('No se encontraron empleados en localStorage. Se inicializa como un array vacío.');
+    }
+    
+    // Actualizar la lista de empleados en el DOM
+    actualizarListaEmpleados();
+  } catch (error) {
+    console.error('Error al recuperar empleados desde localStorage:', error);
+    empleadosarts = [];
+    // Actualizar la lista de empleados en el DOM
+    actualizarListaEmpleados();
+  }
+}
+
+// Llamada para recuperar empleados al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+  recuperarEmpleadosDeLocalStorage();
+});
 
 // Clase Empleado
 class Empleado {
