@@ -1,0 +1,63 @@
+[
+    {
+      "nombre": "Juan Pérez",
+      "cuit": "20312345678",
+      "edad": 35,
+      "ocupacion": "Ingeniero"
+    },
+    {
+      "nombre": "María González",
+      "cuit": "20387654321",
+      "edad": 28,
+      "ocupacion": "Contadora"
+    },
+    {
+      "nombre": "Carlos Sánchez",
+      "cuit": "20234567890",
+      "edad": 42,
+      "ocupacion": "Abogado"
+    },
+    {
+      "nombre": "Laura Fernández",
+      "cuit": "20123456789",
+      "edad": 31,
+      "ocupacion": "Médico"
+    },
+    {
+      "nombre": "Pedro Gómez",
+      "cuit": "20456789012",
+      "edad": 39,
+      "ocupacion": "Programador"
+    },
+    {
+      "nombre": "Ana Rodríguez",
+      "cuit": "20890123456",
+      "edad": 26,
+      "ocupacion": "Diseñadora"
+    },
+    {
+      "nombre": "Luis Martínez",
+      "cuit": "20789012345",
+      "edad": 45,
+      "ocupacion": "Arquitecto"
+    },
+    {
+      "nombre": "Elena López",
+      "cuit": "20678901234",
+      "edad": 33,
+      "ocupacion": "Profesora"
+    },
+    {
+      "nombre": "Diego Herrera",
+      "cuit": "20567890123",
+      "edad": 29,
+      "ocupacion": "Consultor"
+    },
+    {
+      "nombre": "Carolina Castro",
+      "cuit": "20901234567",
+      "edad": 37,
+      "ocupacion": "Economista"
+    }
+  ]
+  

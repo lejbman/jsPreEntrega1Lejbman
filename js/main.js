@@ -6,7 +6,6 @@ function guardarEmpleadosEnLocalStorage() {
   try {
     const empleadosJson = JSON.stringify(empleadosarts);
     localStorage.setItem('empleados', empleadosJson);
-    console.log('Empleados guardados en localStorage correctamente.');
   } catch (error) {
     console.error('Error al guardar empleados en localStorage:', error);
   }
@@ -18,10 +17,8 @@ function recuperarEmpleadosDeLocalStorage() {
     const empleadosJson = localStorage.getItem('empleados');
     if (empleadosJson) {
       empleadosarts = JSON.parse(empleadosJson);
-      console.log('Empleados recuperados desde localStorage:', empleadosarts);
     } else {
       empleadosarts = [];
-      console.log('No se encontraron empleados en localStorage. Se inicializa como un array vacío.');
     }
   } catch (error) {
     console.error('Error al recuperar empleados desde localStorage:', error);
@@ -103,6 +100,14 @@ document.getElementById('cargarEmpleadoButton').addEventListener('click', functi
 
   // Llamar a una función para actualizar la lista de empleados en la interfaz
   actualizarListaEmpleados();
+
+  // Mostrar mensaje de éxito con SweetAlert
+  Swal.fire({
+    icon: 'success',
+    title: 'Empleado Cargado',
+    text: 'El empleado ha sido cargado correctamente.',
+    confirmButtonText: 'Aceptar'
+  });
 });
 
 // Función auxiliar para verificar si un valor es un número válido
@@ -174,10 +179,8 @@ function recuperarEmpleadosDeLocalStorage() {
     const empleadosJson = localStorage.getItem('empleados');
     if (empleadosJson) {
       empleadosarts = JSON.parse(empleadosJson);
-      console.log('Empleados recuperados desde localStorage:', empleadosarts);
     } else {
       empleadosarts = [];
-      console.log('No se encontraron empleados en localStorage. Se inicializa como un array vacío.');
     }
     
     // Actualizar la lista de empleados en el DOM
@@ -316,3 +319,8 @@ function mostrarResultadosFiltradosNombreApellido(empleadosFiltrados) {
     resultadosContainer.textContent = 'No se encontraron empleados con el nombre y/o apellido especificado.';
   }
 }
+// Fetch al archivo .JSON (que contiene un array con los datos de 10 empleados ficticios. No lo incorporo al html, para no ensuciar la página)
+fetch("./db/data.JSON")
+.then(response => response.json())
+.then(data => console.log(data))
+
